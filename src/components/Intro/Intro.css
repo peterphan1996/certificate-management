@@ -1,0 +1,7 @@
+.App-intro {
+  transition: transform 0.2s;
+}
+
+.App-intro:hover {
+  transform: scale(1.5);
+}
