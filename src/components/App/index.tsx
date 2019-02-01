@@ -1,33 +1,43 @@
-import React, { Component } from "react";
-import Web3 from "web3";
-import { Menu, Icon, Layout, Spin, message } from "antd";
+import { Icon, Layout, Menu, message, Spin } from 'antd';
+import React, { Component } from 'react';
+import Web3 from 'web3';
 
-import "./App.css";
-import Issue from "../Issue/Issue";
-import Verify from "../Verify/Verify";
-import { Intro } from "../Intro/Intro";
-import { abi, bytecode } from "../../constants";
-import Logo from "./CertMana-logo.png";
+import { abi, bytecode } from '../../constants';
 import {
   getContractAddressList,
-  setContractAddress
-} from "../../libs/smartContractUtils";
+  setContractAddress,
+} from '../../libs/smartContractUtils';
+import { Intro } from '../Intro/Intro';
+import Issue from '../Issue/Issue';
+import Verify from '../Verify/Verify';
+import './App.css';
+import Logo from './CertMana-logo.png';
+
+interface IState {
+  web3: any;
+  institute: string;
+  contractAddress: string;
+  MyContract: any;
+  currentSection: string;
+  intro: boolean;
+  pendingContract: boolean;
+  account: string;
+  getContractAddressList: string[];
+}
 
 const { Header, Content } = Layout;
-class App extends Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      web3: new Web3(Web3.givenProvider || "http://localhost:8545"),
-      institute: "",
-      contractAddress: "",
-      MyContract: null,
-      currentSection: "verifier",
-      intro: true,
-      pendingContract: false
-    };
-  }
+class App extends Component<{}, IState> {
+  state = {
+    web3: new Web3(Web3.givenProvider || 'http://localhost:8545'),
+    institute: '',
+    contractAddress: '',
+    MyContract: null,
+    currentSection: 'verifier',
+    intro: true,
+    pendingContract: false,
+    account: '',
+    getContractAddressList: [],
+  };
 
   componentDidMount() {
     const { web3 } = this.state;
@@ -35,39 +45,42 @@ class App extends Component {
       const account = accounts[0];
       this.setState({
         account,
-        getContractAddressList: await getContractAddressList()
+        getContractAddressList: await getContractAddressList(),
       });
     });
   }
 
   createContract = async (
-    MTRoot,
-    instituteName,
-    logoUrl,
-    yearOfGraduation,
-    description
+    MTRoot: string,
+    instituteName: string,
+    logoUrl: string,
+    yearOfGraduation: string,
+    description: string,
   ) => {
     const { web3 } = this.state;
     this.setState({
-      pendingContract: true
+      pendingContract: true,
     });
     console.log(this.state.institute, MTRoot);
     console.log(
-      "im also here",
+      'im also here',
       MTRoot,
       instituteName,
       logoUrl,
       yearOfGraduation,
-      description
+      description,
     );
 
     web3.eth.getAccounts().then(accounts => {
       const account = accounts[0];
-      const certContract = new web3.eth.Contract(abi, {
-        from: account,
-        data: this.state.bytecode,
-        gas: "4700000"
-      });
+      const certContract = new web3.eth.Contract(
+        abi,
+        {
+          from: account,
+          data: bytecode,
+          gas: '4700000',
+        }.toString(),
+      );
 
       certContract.setProvider(web3.currentProvider);
 
@@ -78,41 +91,42 @@ class App extends Component {
             logoUrl,
             yearOfGraduation,
             description,
-            MTRoot
+            MTRoot,
           ],
-          data: bytecode
+          data: bytecode,
         })
         .send({
           from: account,
           gas: 4700000,
-          gasPrice: "3000000"
+          gasPrice: '3000000',
         })
         .then(async newContractInstance => {
           const MyContract = new web3.eth.Contract(
             abi,
-            newContractInstance.options.address
+            newContractInstance.options.address,
           );
           this.setState({
             contractAddress: newContractInstance.options.address,
             MyContract,
-            pendingContract: false
+            pendingContract: false,
           });
-          message.success("Smart Contract created");
-          console.log("address: ", newContractInstance.options.address);
+          message.success('Smart Contract created');
+          console.log('address: ', newContractInstance.options.address);
           await setContractAddress(
             newContractInstance.options.address,
-            this.state.account
+            this.state.account,
           );
         });
     });
+    const contractAddressList = await getContractAddressList();
     this.setState({
-      getContractAddressList: await getContractAddressList()
+      getContractAddressList: contractAddressList,
     });
   };
 
-  selectSection = section => {
+  selectSection = (section: string) => {
     this.setState({
-      currentSection: section
+      currentSection: section,
     });
   };
 
@@ -123,7 +137,7 @@ class App extends Component {
       currentSection,
       intro,
       pendingContract,
-      account
+      account,
     } = this.state;
 
     return intro ? (
@@ -131,72 +145,72 @@ class App extends Component {
         onClick={chosenSection => {
           this.setState({
             currentSection: chosenSection,
-            intro: false
+            intro: false,
           });
         }}
       />
     ) : (
       <Spin spinning={pendingContract} tip="Deploying smart contract ...">
-        <Layout className="layout" style={{ height: "100vh" }}>
+        <Layout className="layout" style={{ height: '100vh' }}>
           <Header>
             <div
               className="logo"
               style={{
-                background: "transparent",
-                margin: "0 24px 0 0"
+                background: 'transparent',
+                margin: '0 24px 0 0',
               }}
             >
-              <img src={Logo} alt="logo" style={{ width: "120px" }} />
+              <img src={Logo} alt="logo" style={{ width: '120px' }} />
             </div>
             <Menu
               theme="dark"
               mode="horizontal"
               defaultSelectedKeys={[currentSection]}
-              style={{ lineHeight: "64px" }}
+              style={{ lineHeight: '64px' }}
             >
               <Menu.Item
                 key="verifier"
-                onClick={() => this.selectSection("verifier")}
+                onClick={() => this.selectSection('verifier')}
               >
                 <Icon
                   type="safety-certificate"
-                  style={{ display: "inline-block", verticalAlign: "middle" }}
+                  style={{ display: 'inline-block', verticalAlign: 'middle' }}
                 />
                 Verifier
               </Menu.Item>
               <Menu.Item
                 key="issuer"
-                onClick={() => this.selectSection("issuer")}
+                onClick={() => this.selectSection('issuer')}
               >
                 <Icon
                   type="file-protect"
-                  style={{ display: "inline-block", verticalAlign: "middle" }}
+                  style={{ display: 'inline-block', verticalAlign: 'middle' }}
                 />
                 Issuer
               </Menu.Item>
             </Menu>
           </Header>
-          <Content style={{ padding: "0 50px" }} className="App">
-            <div style={{ background: "#fff", padding: 24, height: "93vh" }}>
-              {currentSection === "issuer" ? (
+          <Content style={{ padding: '0 50px' }} className="App">
+            <div style={{ background: '#fff', padding: 24, height: '93vh' }}>
+              {currentSection === 'issuer' ? (
                 <Issue
                   MyContract={MyContract}
                   contractAddress={contractAddress}
                   account={account}
                   getContractAddressList={this.state.getContractAddressList}
                   createContract={(
-                    MTRoot,
-                    instituteName,
-                    logoUrl,
-                    yearOfGraduation,
-                    description
+                    MTRoot: string,
+                    instituteName: string,
+                    logoUrl: string,
+                    yearOfGraduation: string,
+                    description: string,
                   ) =>
                     this.createContract(
                       MTRoot,
                       instituteName,
                       logoUrl,
                       yearOfGraduation,
-                      description
+                      description,
                     )
                   }
                 />

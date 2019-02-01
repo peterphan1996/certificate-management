@@ -1,10 +1,14 @@
+import { Pagination } from 'antd';
 import React, { Component } from 'react';
 import { Document, Page } from 'react-pdf';
-import { Pagination } from 'antd';
 
-class Pdf extends Component {
+interface Props {
+  file: any;
+}
+
+class Pdf extends Component<Props> {
   state = {
-    numPages: null,
+    numPages: 0,
     pageNumber: 1,
   };
 

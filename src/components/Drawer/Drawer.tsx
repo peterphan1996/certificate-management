@@ -1,6 +1,6 @@
-import React from 'react';
-import { Drawer, List, Avatar, Divider, Col, Row, Button } from 'antd';
+import { Avatar, Button, Col, Divider, Drawer, List, Row } from 'antd';
 import PropTypes from 'prop-types';
+import React, { CSSProperties } from 'react';
 import Pdf from '../Pdf/Pdf';
 
 const pStyle = {
@@ -39,7 +39,12 @@ DescriptionItem.propTypes = {
   content: PropTypes.any,
 };
 
-class CustomDrawer extends React.Component {
+interface Props {
+  instituteInfo: object;
+  file: any;
+}
+
+class CustomDrawer extends React.Component<Props> {
   state = { visible: false };
 
   showDrawer = () => {
@@ -76,7 +81,7 @@ class CustomDrawer extends React.Component {
             <List.Item
               key={item.id}
               actions={[
-                <Button type="dashed" onClick={this.showDrawer}>
+                <Button type="dashed" onClick={this.showDrawer} key={item.id}>
                   View Info
                 </Button>,
               ]}
@@ -96,7 +101,7 @@ class CustomDrawer extends React.Component {
           onClose={this.onClose}
           visible={this.state.visible}
         >
-          <p style={pStyle}>Instritute Info</p>
+          <p style={pStyle as CSSProperties}>Instritute Info</p>
           <Row>
             <Col span={12}>
               <DescriptionItem title="Institute Name" content={instituteName} />{' '}
@@ -119,7 +124,7 @@ class CustomDrawer extends React.Component {
             </Col>
           </Row>
           <Divider />
-          <p style={pStyle}>Batch of Certificates Info</p>
+          <p style={pStyle as CSSProperties}>Batch of Certificates Info</p>
           <Row>
             <Col span={12}>
               <DescriptionItem
@@ -149,7 +154,7 @@ class CustomDrawer extends React.Component {
           <Divider />
           {file && (
             <div>
-              <p style={pStyle}>Digital Certificate</p>
+              <p style={pStyle as CSSProperties}>Digital Certificate</p>
               <Row>
                 <Col span={12}>
                   <Pdf file={file} />
@@ -162,9 +167,5 @@ class CustomDrawer extends React.Component {
     );
   }
 }
-
-CustomDrawer.propTypes = {
-  instituteInfo: PropTypes.object,
-};
 
 export default CustomDrawer;

@@ -1,6 +1,6 @@
-import React from 'react';
+import { Col, Icon, Row } from 'antd';
 import PropTypes from 'prop-types';
-import { Icon, Row, Col } from 'antd';
+import React from 'react';
 
 import './Intro.css';
 

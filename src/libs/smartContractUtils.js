@@ -9,27 +9,8 @@ export const revokeCertificate = (
   selectedAddress,
 ) => {
   console.log(_hashedCert, account, MyContract);
-
-  // const getData = MyContract.methods
-  //   .revokeCertificate(_hashedCert, _reasonForRevoke)
-  //   .encodeABI();
-  // finally paas this data parameter to send Transaction
-  // web3.eth.sendTransaction({
-  //   to: contractAddress,
-  //   from: account,
-  //   data: getData,
-  //   nonce,
-  // });
   const web3 = new Web3(Web3.givenProvider || 'http://localhost:8545');
   web3.eth.getTransactionCount(account, (err, nonce) => {
-    // Get the nonce
-    console.log('ddmm', nonce, account);
-    // MyContract.methods
-    //   .revokeCertificate(_hashedCert, _reasonForRevoke)
-    //   .send({ from: account, nonce: newNonce })
-    //   .then(receipt => {
-    //     console.log(receipt);
-    //   });
     const getData = MyContract.methods
       .revokeCertificate(_hashedCert, _reasonForRevoke)
       .encodeABI();
