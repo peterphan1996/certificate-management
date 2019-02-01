@@ -24,13 +24,6 @@ export const revokeCertificate = (
   });
 };
 
-revokeCertificate.propTypes = {
-  _hashedCert: PropTypes.string.isRequired,
-  _reasonForRevoke: PropTypes.string.isRequired,
-  account: PropTypes.string.isRequired,
-  MyContract: PropTypes.object.isRequired,
-};
-
 export const getInstituteInfo = async MyContract => {
   // console.log(props)
   const result = await MyContract.methods.getInstituteInfo().call();
@@ -46,21 +39,12 @@ export const getRoot = async MyContract => {
   return result;
 };
 
-getRoot.propTypes = {
-  MyContract: PropTypes.object.isRequired,
-};
-
 export const verifyWithRevocationList = async (_hashedCert, MyContract) => {
   const result = await MyContract.methods
     .verifyWithRevocationList(_hashedCert)
     .call();
   console.log(result);
   return result;
-};
-
-verifyWithRevocationList.propTypes = {
-  _hashedCert: PropTypes.string.isRequired,
-  MyContract: PropTypes.object.isRequired,
 };
 
 export const getAccountTransactions = async (accAddress, startBlockNumber) => {
