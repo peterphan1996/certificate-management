@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types';
 import Web3 from 'web3';
 import { rootAbi, rootAddressLocal } from '../constants';
 export const revokeCertificate = (

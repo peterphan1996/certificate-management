@@ -39,13 +39,14 @@ class App extends Component<{}, IState> {
     getContractAddressList: [],
   };
 
-  componentDidMount() {
+  async componentDidMount() {
     const { web3 } = this.state;
-    web3.eth.getAccounts().then(async accounts => {
+    const contractAddressList = await getContractAddressList();
+    web3.eth.getAccounts().then(accounts => {
       const account = accounts[0];
       this.setState({
         account,
-        getContractAddressList: await getContractAddressList(),
+        getContractAddressList: contractAddressList,
       });
     });
   }
@@ -73,14 +74,7 @@ class App extends Component<{}, IState> {
 
     web3.eth.getAccounts().then(accounts => {
       const account = accounts[0];
-      const certContract = new web3.eth.Contract(
-        abi,
-        {
-          from: account,
-          data: bytecode,
-          gas: '4700000',
-        }.toString(),
-      );
+      const certContract: any = new web3.eth.Contract(abi as any);
 
       certContract.setProvider(web3.currentProvider);
 

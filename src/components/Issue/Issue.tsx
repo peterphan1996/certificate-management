@@ -2,6 +2,7 @@ import { Button, Icon, List, message, Tabs, Tag, Upload } from 'antd';
 import sha256 from 'crypto-js/sha256';
 import JSZip from 'jszip';
 import React from 'react';
+import { Animated } from 'react-animated-css';
 import Dropzone from 'react-dropzone';
 import Web3 from 'web3';
 
@@ -255,16 +256,22 @@ class Issue extends React.Component<Props, IState> {
                 multiple
                 className="dropzone"
               >
-                <Icon
-                  type="cloud-upload"
-                  style={{
-                    fontSize: '70px',
-                    color: COLOR.yellow,
-                    cursor: 'pointer',
-                    marginBottom: '20px',
-                  }}
-                  className="App-intro"
-                />
+                <Animated
+                  animationIn="wobble"
+                  animationOut={'none' as any}
+                  isVisible
+                >
+                  <Icon
+                    type="cloud-upload"
+                    style={{
+                      fontSize: '70px',
+                      color: COLOR.yellow,
+                      cursor: 'pointer',
+                      marginBottom: '20px',
+                    }}
+                    className="App-intro"
+                  />
+                </Animated>
                 <p>
                   Drop your{' '}
                   <span style={{ fontWeight: 'bold', color: COLOR.blue }}>

@@ -1,7 +1,7 @@
 export const rootAddressRinkeby = '0x9efd4724e03f003ab3cfe534499f87b8efb855e9';
 export const rootAddressRopsten = '0x9ebf8424616feef1c244d68fb3028ff98333e27b';
 export const rootAddressLocal = '0xe78a0f7e598cc8b0bb87894b0f60dd2a88d6a8ab';
-export const abi = [
+export const abi: any = [
   {
     constant: false,
     inputs: [
@@ -258,21 +258,7 @@ export const abi = [
     type: 'function',
   },
 ];
-export const rootAbi = [
-  {
-    constant: false,
-    inputs: [
-      {
-        name: '_contractAddress',
-        type: 'address',
-      },
-    ],
-    name: 'setContractAddress',
-    outputs: [],
-    payable: false,
-    stateMutability: 'nonpayable',
-    type: 'function',
-  },
+export const rootAbi: any = [
   {
     constant: true,
     inputs: [
@@ -290,6 +276,20 @@ export const rootAbi = [
     ],
     payable: false,
     stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    constant: false,
+    inputs: [
+      {
+        name: '_contractAddress',
+        type: 'address',
+      },
+    ],
+    name: 'setContractAddress',
+    outputs: [],
+    payable: false,
+    stateMutability: 'nonpayable',
     type: 'function',
   },
   {
