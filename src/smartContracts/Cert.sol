@@ -17,8 +17,8 @@ contract Cert is Ownable {
         description= _description;
     }
     
-    // string studentID => string reasonForRevoke
-    mapping (string => string) revocationList; // studentID => hashedCertificate
+    // string hashedCertificate => string reasonForRevoke
+    mapping (string => string) revocationList;
     
     
     function getInstituteInfo() public view returns(string, string, int, string){
