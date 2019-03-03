@@ -1,9 +1,14 @@
-import React from 'react';
 import { Form, Icon, Input } from 'antd';
+import React from 'react';
 
 const FormItem = Form.Item;
 
-class RevokeForm extends React.Component {
+interface Props {
+  form: any;
+  onChange: (address, reason) => void;
+}
+
+class RevokeForm extends React.Component<Props> {
   handleSubmit = e => {
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
